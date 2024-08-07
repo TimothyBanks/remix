@@ -1,0 +1,15 @@
+{
+  "name": "mintable-token",
+  "version": "1.0.0",
+  "description": "The provided code, MintableToken.sol, is a simplified ERC20 stablecoin token, like USDC. The token is backed by US dollars. For each dollar we receive in an offchain bank account, we mint the corresponding amount of USDC onchain.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {},
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.2"
+  }
+}
