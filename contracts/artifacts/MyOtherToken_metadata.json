@@ -9,37 +9,12 @@
 				"inputs": [
 					{
 						"internalType": "uint256",
-						"name": "initialSupply",
+						"name": "initial_supply",
 						"type": "uint256"
 					}
 				],
 				"stateMutability": "nonpayable",
 				"type": "constructor"
-			},
-			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": true,
-						"internalType": "address",
-						"name": "owner",
-						"type": "address"
-					},
-					{
-						"indexed": true,
-						"internalType": "address",
-						"name": "spender",
-						"type": "address"
-					},
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "value",
-						"type": "uint256"
-					}
-				],
-				"name": "Approval",
-				"type": "event"
 			},
 			{
 				"anonymous": false,
@@ -97,7 +72,7 @@
 					{
 						"indexed": false,
 						"internalType": "uint256",
-						"name": "value",
+						"name": "amount",
 						"type": "uint256"
 					}
 				],
@@ -108,16 +83,11 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "owner",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "spender",
+						"name": "a",
 						"type": "address"
 					}
 				],
-				"name": "allowance",
+				"name": "balance",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -132,47 +102,9 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "spender",
+						"name": "from",
 						"type": "address"
 					},
-					{
-						"internalType": "uint256",
-						"name": "amount",
-						"type": "uint256"
-					}
-				],
-				"name": "approve",
-				"outputs": [
-					{
-						"internalType": "bool",
-						"name": "",
-						"type": "bool"
-					}
-				],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "account",
-						"type": "address"
-					}
-				],
-				"name": "balanceOf",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
 					{
 						"internalType": "uint256",
 						"name": "amount",
@@ -198,6 +130,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "max_supply",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -217,7 +162,7 @@
 			},
 			{
 				"inputs": [],
-				"name": "name",
+				"name": "token_name",
 				"outputs": [
 					{
 						"internalType": "string",
@@ -230,25 +175,12 @@
 			},
 			{
 				"inputs": [],
-				"name": "symbol",
+				"name": "token_symbol",
 				"outputs": [
 					{
 						"internalType": "string",
 						"name": "",
 						"type": "string"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "totalSupply",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -258,7 +190,7 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "recipient",
+						"name": "to",
 						"type": "address"
 					},
 					{
@@ -268,42 +200,7 @@
 					}
 				],
 				"name": "transfer",
-				"outputs": [
-					{
-						"internalType": "bool",
-						"name": "",
-						"type": "bool"
-					}
-				],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "sender",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "recipient",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "amount",
-						"type": "uint256"
-					}
-				],
-				"name": "transferFrom",
-				"outputs": [
-					{
-						"internalType": "bool",
-						"name": "",
-						"type": "bool"
-					}
-				],
+				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
 			},
@@ -332,7 +229,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts/BSideToken.sol": "BSideToken"
+			"contracts/MyOtherToken.sol": "MyOtherToken"
 		},
 		"evmVersion": "cancun",
 		"libraries": {},
@@ -346,20 +243,12 @@
 		"remappings": []
 	},
 	"sources": {
-		"contracts/BSideToken.sol": {
-			"keccak256": "0x9f7cac3b3478c831a9ab70e2e37485657056a4e7831529666985638572bacf9e",
+		"contracts/MyOtherToken.sol": {
+			"keccak256": "0x7bca296822a679e3da787798e0dd2b9a15ae83c36146404f3f4879a080c6f94c",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://d22f8501ac207ffa538302fa57065be32a1fb15b21cfa03329840a8079a0b37d",
-				"dweb:/ipfs/QmR87zcAhgM5Cg9PeVHeSxk9vuvJGDrYh8iQ3q4xLsn8mB"
-			]
-		},
-		"contracts/ERC20.sol": {
-			"keccak256": "0x1b38d5510ad24de5b85a7bf6e5cdedb72eb057af6475fc93722ef13f77a0fdb2",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://ea434264861847ccd2b6f613fce468fb0af62fbc5b3621b312bd188030a19e79",
-				"dweb:/ipfs/QmNausfmxQFphMGkVxfeLLy2f7nTabQ3ZazQTKASNmcPpE"
+				"bzz-raw://82096ba6170477fce103ab255c541444b353432d9cc25cd3b25488426e38e029",
+				"dweb:/ipfs/QmRvjjE9EUMjsbCzL5vNmpn3t25Uw6xtYTHcvjgcNNqDzL"
 			]
 		}
 	},
