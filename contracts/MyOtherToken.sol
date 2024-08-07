@@ -1,47 +1,58 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
+// This doesn't necessarily follow the ERC20 standard.  Just
+// learning how to write some solidity.
 contract MyOtherToken {
-    string public constant token_name = "MyOtherToken";
-    string public constant token_symbol = "MOT";
-    uint8 public constant decimals = 18;
-    uint256 private constant multipler = 10**uint256(decimals);
-    uint256 public constant max_supply = 1_000_000 * multipler; // 1 million tokens
+    string public constant name = "MyOtherToken";
+    string public constant symbol = "MOT";
+    uint256 private constant decimals = 18;
+    uint256 private max_supply = 1_000_000 * 10 ** decimals;
 
-    address private immutable owner;
-    uint256 private total_supply = 0;
-    mapping(address => uint256) private balances;
-    bool private locked = false;
+    mapping(address => uint256) private _balances;
 
-    modifier only_owner() {
-        require(msg.sender == owner, "Only owner can access this action.");
+    uint256 private _total_supply = 0;
+    bool private _locked = false;
+    address private immutable _owner;
+
+    modifier onlyOwner() {
+        require(msg.sender == _owner, "Must be owner");
         _;
     }
 
-    modifier valid_address(address a) {
-        require(a != address(0), "Must specify a valid address.");
+    modifier noReentry() {
+        require(!_locked, "Re-entry is not allowed");
+        _locked = true;
+        _;
+        _locked = false;
+    }
+
+    modifier verifyAddress(address a) {
+        require(a != address(0), "Invalid address");
         _;
     }
 
-    modifier no_rentry() {
-        require(!locked, "Rentrant calls are not allowed.");
-        locked = true;
-        _;
-        locked = false;
-    }
-
-    modifier sufficient_mint(uint256 amount) {
-        require(total_supply + amount <= max_supply, "Insufficient max supply");
+    modifier verifyFunds(address a, uint256 amount) {
+        require(_balances[a] >= amount, "Insufficent funds");
         _;
     }
 
-    modifier sufficient_burn(uint256 amount) {
-        require(amount <= total_supply, "Insufficient total supply");
+    modifier verifyFoo(address from, address to, uint256 amount) {
+        uint256 from_amount = _balances[from];
+        uint256 to_amount = _balances[to];
+        _;
+        // THIS SEEMS TO BE A NO NO.  Examining state after the _; can result in the compiler getting "confused"
+        require(from_amount - amount == _balances[from], "Transfer failed");
+        require(to_amount - amount == _balances[to], "Transfer failed");
+    }
+
+    modifier verifyMinting(uint256 amount) {
+        require(_total_supply + amount <= max_supply, "Minting exceeds maximum supply");
         _;
     }
 
-    modifier sufficient_funds(address a, uint256 amount) {
-        require(balances[a] >= amount, "Insufficient funds to burn");
+    modifier verifyBurning(address from, uint256 amount) {
+        require(_balances[from] >= amount, "Insuffient funds to burn");
         _;
     }
 
@@ -50,62 +61,63 @@ contract MyOtherToken {
     event Burn(address indexed from, uint256 amount);
 
     constructor(uint256 initial_supply) {
-        require(initial_supply * multipler <= max_supply, "initial_supply can not exceed maximum.");
-        owner = msg.sender;
-        total_supply = initial_supply;
-        balances[owner] = total_supply;
+        _owner = msg.sender;
+        _total_supply = initial_supply * 10 ** decimals;
     }
 
-    function transfer(address to, uint256 amount) 
+    // 0x78FD83768c7492aE537924c9658BE3D29D8ffFc1,0x742d35Cc6634C0532925a3b844Bc454e4438f44e,99
+    function transfer(address a, address b, uint256 amount)
         external 
-        valid_address(msg.sender)
-        valid_address(to)
-        sufficient_funds(msg.sender, amount) 
-        no_rentry
+        verifyAddress(a)
+        verifyFunds(a, amount)
+        verifyAddress(b)
+        // verifyFoo(a, b, amount)  // This modified is not liked.
+        noReentry
+        returns (bool)
     {
-        balances[msg.sender] -= amount;
-        balances[to] += amount;
-        emit Transfer(msg.sender, to, amount);
+        _balances[a] -= amount;
+        _balances[b] += amount;
+        emit Transfer(a, b, amount);
+        return true;
     }
 
     function mint(address to, uint256 amount) 
-        external 
-        only_owner
-        valid_address(to)
-        sufficient_mint(amount) 
-        no_rentry
+        external
+        verifyAddress(msg.sender) 
+        onlyOwner
+        verifyAddress(to)
+        verifyMinting(amount)
+        noReentry
     {
-        balances[to] += amount;
-        total_supply += amount;
+        _total_supply += amount;
+        _balances[to] += amount;
         emit Mint(to, amount);
     }
 
-    function burn(address from, uint256 amount)
+    function burn(address from, uint256 amount) 
         external
-        only_owner
-        valid_address(from)
-        sufficient_funds(from, amount)
-        sufficient_burn(amount)
-        no_rentry
+        verifyAddress(from)
+        verifyBurning(from, amount)
+        noReentry
     {
-        balances[from] -= amount;
-        total_supply -= amount;
-        // Should this also burn from the maximum?
+        max_supply -= amount;
+        _total_supply -= amount;
+        _balances[from] -= amount;
         emit Burn(from, amount);
     }
 
-    function balance(address a) 
+    function balance(address a)
         external view 
-        valid_address(a)
+        verifyAddress(a)
         returns (uint256)
     {
-        return balances[a];
+        return _balances[a];
     }
 
     receive() external payable {}
 
-    function withdraw() external only_owner {
+    function withdraw() external onlyOwner {
         // withdraw the ether received in "receive"
-        payable(owner).transfer(address(this).balance);
+        payable(_owner).transfer(address(this).balance);
     }
 }

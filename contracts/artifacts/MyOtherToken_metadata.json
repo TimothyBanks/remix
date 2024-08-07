@@ -117,32 +117,6 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "decimals",
-				"outputs": [
-					{
-						"internalType": "uint8",
-						"name": "",
-						"type": "uint8"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "max_supply",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -162,7 +136,7 @@
 			},
 			{
 				"inputs": [],
-				"name": "token_name",
+				"name": "name",
 				"outputs": [
 					{
 						"internalType": "string",
@@ -175,7 +149,7 @@
 			},
 			{
 				"inputs": [],
-				"name": "token_symbol",
+				"name": "symbol",
 				"outputs": [
 					{
 						"internalType": "string",
@@ -190,7 +164,12 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "to",
+						"name": "a",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "b",
 						"type": "address"
 					},
 					{
@@ -200,7 +179,13 @@
 					}
 				],
 				"name": "transfer",
-				"outputs": [],
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
 				"stateMutability": "nonpayable",
 				"type": "function"
 			},
@@ -244,11 +229,11 @@
 	},
 	"sources": {
 		"contracts/MyOtherToken.sol": {
-			"keccak256": "0x7bca296822a679e3da787798e0dd2b9a15ae83c36146404f3f4879a080c6f94c",
+			"keccak256": "0x47822118aab4043d78410db18dfbfe824cec70e092c1569b73c7fd4e3b06644a",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://82096ba6170477fce103ab255c541444b353432d9cc25cd3b25488426e38e029",
-				"dweb:/ipfs/QmRvjjE9EUMjsbCzL5vNmpn3t25Uw6xtYTHcvjgcNNqDzL"
+				"bzz-raw://16743c07e10344c3a814ca96e7a9898ed55762f7a84bbfadb47275afb7649a8b",
+				"dweb:/ipfs/QmQ5hP2uduNbmViCagqthnzxcqBFghRF81juxo8uyqZU7C"
 			]
 		}
 	},
